@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registros</title>
+  <link rel="stylesheet" href="/style.css">
+  
+  <style>
+    .registro-section {
+      background: #fff;
+      padding: 18px;
+      border-radius: 14px;
+      margin-bottom: 22px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .registro-section h2 {
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .registro-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .registro-item {
+      background: #f7f7f7;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.4;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+      border-left: 4px solid #007bff;
+    }
+    .registro-item strong {
+      font-size: 14px;
+      color: #2c5282;
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+
+  <h1>Registros</h1>
+
+  <% if (registros && registros.length > 0) { %>
+
+      <section class="registro-section">
+        <h2>Medicações</h2>
+
+        <%
+          const meds = registros
+            .filter(r => r.type === 'medicacao')
+            .sort((a, b) => new Date(b.data) - new Date(a.data));
+        %>
+
+        <% if (meds.length === 0) { %>
+          <p>Nenhuma medicação registrada.</p>
+        <% } else { %>
+          <ul class="registro-list">
+            <% meds.forEach(r => { %>
+              <li class="registro-item">
+                <strong><%= r.data.toLocaleString('pt-BR') %></strong>
+                <%= r.descricao %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </section>
+
+      <section class="registro-section">
+        <h2>Ocorrências</h2>
+
+        <%
+          const ocorrs = registros
+            .filter(r => r.type === 'ocorrencia')
+            .sort((a, b) => new Date(b.data) - new Date(a.data));
+        %>
+
+        <% if (ocorrs.length === 0) { %>
+          <p>Nenhuma ocorrência registrada.</p>
+        <% } else { %>
+          <ul class="registro-list">
+            <% ocorrs.forEach(r => { %>
+              <li class="registro-item">
+                <strong><%= r.data.toLocaleString('pt-BR') %></strong>
+                <%= r.descricao %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+      </section>
+
+  <% } else { %>
+    <div class="card empty-state">
+      <p>Nenhum registro encontrado.</p>
+    </div>
+  <% } %>
+
+  <div class="form-actions">
+    <a href="/familias/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+  </div>
+
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

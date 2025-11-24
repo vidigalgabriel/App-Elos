@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Minhas Atribuições</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <%- include('../partials/header') %>
+
+  <main class="container">
+    <h1>Minhas Atribuições</h1>
+
+    <% if (child) { %>
+      <div class="card">
+        <h2>Criança atribuída</h2>
+        <div class="details-list">
+          <p><strong>Nome:</strong> <%= child.name %></p>
+          <p><strong>Idade:</strong> <%= child.age || 'Não informado' %></p>
+          <p><strong>Nascimento:</strong> <%= child.birthDate ? child.birthDate.toLocaleDateString('pt-BR') : 'Não informado' %></p>
+          <p><strong>Necessidades especiais:</strong> <%= child.specialNeeds || 'Nenhuma' %></p>
+        </div>
+      </div>
+
+      <div class="card"> <h2>Responsável</h2>
+        <div class="details-list">
+          <p><strong>Nome:</strong> <%= child.guardian.name %></p>
+          <p><strong>Email:</strong> <%= child.guardian.email %></p>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <a href="/tutors/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+      </div>
+
+    <% } else { %>
+      <div class="card empty-state">
+        <p>Você ainda não possui atribuições.</p>
+        <a href="/tutors/dashboard" class="btn btn-primary">Ir para o Dashboard</a>
+      </div>
+    <% } %>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

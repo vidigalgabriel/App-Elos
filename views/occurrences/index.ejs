@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Ocorrências</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+  <h1>Lista de Ocorrências</h1>
+
+  <% if (occurrences.length === 0) { %>
+    <div class="card empty-state">
+      <p>Nenhuma ocorrência registrada.</p>
+    </div>
+  <% } else { %>
+    <ul class="child-list-container">
+      <% occurrences.forEach(occurrence => { %>
+        <li class="child-item">
+          <a href="/Occurrences/<%= occurrence._id %>">
+            <strong><%= occurrence.title %></strong>
+            <span>(Criança: <%= occurrence.child.name %>)</span>
+          </a>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <div class="form-actions">
+    <a href="/Occurrences/new" class="btn btn-primary">Nova Ocorrência</a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

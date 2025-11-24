@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Registros</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f4f4f4;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex-grow: 1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    h1 {
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #222;
+      font-size: 1.3rem;
+    }
+    h2 {
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #222;
+      font-size: 1.2rem;
+    }
+    h3 {
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #444;
+      font-size: 1.1rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+    p {
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      transition: .2s ease-in-out;
+      border: none;
+      width: 100%;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+    .btn-success {
+      background: #198754;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #157347;
+    }
+
+    form div {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="datetime-local"],
+    textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background: white;
+      min-height: 48px;
+    }
+    textarea {
+      min-height: 100px;
+    }
+    fieldset {
+      border: none;
+      padding: 0;
+      margin: 0;
+    }
+    legend {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding: 0;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+      margin-bottom: 0;
+    }
+
+    .app-header {
+      width: 100%;
+      background: #2c5282;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      background: white;
+      color: #2c5282;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .title { font-size: 1.3rem; font-weight: 600; }
+    .role-menu { display: flex; align-items: center; gap: 14px; }
+    .role-menu a { color: white; text-decoration: none; font-size: 0.95rem; padding: 6px 10px; border-radius: 6px; }
+    .logout { background: rgba(255, 50, 50, 0.25); }
+
+    .app-footer {
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px; 
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #ddd;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 24px 18px;
+    }
+    .empty-state p {
+      font-size: 1.05rem;
+      color: #555;
+      margin-bottom: 20px;
+    }
+
+    .radio-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    .radio-label input[type="radio"] {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .radio-label input[type="radio"]:checked {
+      accent-color: #2c5282;
+    }
+    
+    .divider {
+      border: 0;
+      border-top: 1px solid #ddd;
+      margin: 24px 0;
+    }
+    
+    .history-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .history-item {
+      background: #fdfdfd;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .history-item strong {
+      font-size: 0.9rem;
+      color: #333;
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/header') %>
+
+  <main class="container">
+    <h1>Registros</h1>
+
+    <% if (!child) { %>
+      <div class="card empty-state">
+        <p>Nenhuma criança atribuída.</p>
+        <div class="form-actions" style="margin-top: 0;">
+          <a href="/tutors/dashboard" class="btn btn-secondary">Voltar</a>
+        </div>
+      </div>
+      
+      </main> 
+      <%- include('../partials/footer') %>
+      <% return; %>
+    <% } %>
+
+    <div class="card">
+      <form action="/tutors/registros" method="POST">
+        <fieldset>
+          <legend>Novo registro</legend>
+
+          <label class="radio-label">
+            <input type="radio" name="tipo" value="medicacao" required>
+            Medicação
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="tipo" value="ocorrencia">
+            Ocorrência
+          </label>
+
+          <div>
+            <label for="data">Data e hora:</label>
+            <input type="datetime-local" id="data" name="data" required>
+          </div>
+
+          <div>
+            <label id="label-descricao">Descrição:</label>
+            <textarea id="descricao" name="descricao" rows="4" required></textarea>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-success">Registrar</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="card">
+      <h2>Histórico de Registros</h2>
+
+      <% if (!registros || registros.length === 0) { %>
+        <p>Nenhum registro encontrado.</p>
+      <% } else { %>
+
+        <h3>Medicações</h3>
+        <%
+          const meds = registros
+            .filter(r => r.type === 'medicacao')
+            .sort((a,b) => new Date(b.data) - new Date(a.data));
+        %>
+        <% if (meds.length === 0) { %>
+          <p>Nenhuma medicação registrada.</p>
+        <% } else { %>
+          <ul class="history-list">
+            <% meds.forEach(r => { %>
+              <li class="history-item">
+                <strong><%= r.data.toLocaleString('pt-BR') %></strong>
+                <%= r.descricao %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+
+        <hr class="divider">
+
+        <h3>Ocorrências</h3>
+        <%
+          const ocorrs = registros
+            .filter(r => r.type === 'ocorrencia')
+            .sort((a,b) => new Date(b.data) - new Date(a.data));
+        %>
+        <% if (ocorrs.length === 0) { %>
+          <p>Nenhuma ocorrência registrada.</p>
+        <% } else { %>
+          <ul class="history-list">
+            <% ocorrs.forEach(r => { %>
+              <li class="history-item">
+                <strong><%= r.data.toLocaleString('pt-BR') %></strong>
+                <%= r.descricao %>
+              </li>
+            <% }) %>
+          </ul>
+        <% } %>
+
+      <% } %>
+    </div>
+
+    <div class="form-actions">
+      <a href="/tutors/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+    </div>
+
+  </main>
+
+  <script>
+    function onTipoChange() {
+      const tipo = document.querySelector('input[name="tipo"]:checked')?.value;
+      const labelDesc = document.getElementById('label-descricao');
+      const textarea = document.getElementById('descricao');
+      
+      if (!tipo) {
+        labelDesc.textContent = 'Descrição:';
+        textarea.placeholder = '';
+      } else if (tipo === 'medicacao') {
+        labelDesc.textContent = 'Descrição da Medicação:';
+        textarea.placeholder = 'Descreva a medicação (dose, via, observações)...';
+      } else {
+        labelDesc.textContent = 'Descrição da Ocorrência:';
+        textarea.placeholder = 'Descreva a ocorrência (o que aconteceu, sinais, contexto)...';
+      }
+    }
+    
+    function setInitialDateTime() {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      const nowString = now.toISOString().slice(0, 16);
+      document.getElementById('data').value = nowString;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const radios = document.querySelectorAll('input[name="tipo"]');
+      radios.forEach(r => r.addEventListener('change', onTipoChange));
+      
+      onTipoChange(); 
+      setInitialDateTime();
+    });
+  </script>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Lista de Tutores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <%- include('../partials/header') %>
+
+  <main class="container">
+    <h1>Lista de Tutores</h1>
+
+    <ul class="child-list-container">
+      <% tutors.forEach(tutor => { %>
+        <li class="child-item">
+          <a href="/Tutors/<%= tutor._id %>"><%= tutor.name %></a>
+        </li>
+      <% }) %>
+    </ul>
+
+    <div class="form-actions">
+      <a href="/Tutors/new" class="btn btn-primary">Novo Tutor</a>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

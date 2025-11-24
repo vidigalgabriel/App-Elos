@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrar Usuário</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center; 
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+    .card.auth-card {
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .alert-error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+    .auth-link {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.95rem;
+      color: #444;
+    }
+    .auth-link a {
+      color: #007bff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .auth-link a:hover {
+      text-decoration: underline;
+    }
+    .conditional-fields {
+      background: #f9f9f9;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 16px;
+      margin-top: 20px;
+    }
+    .conditional-fields h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 8px;
+      color: #333;
+      margin-top: 0;
+    }
+  </style>
+
+  <script>
+    function toggleRoleFields() {
+      const role = document.getElementById('role').value;
+      const childBox = document.getElementById('childFields');
+      const tutorBox = document.getElementById('tutorFields');
+
+      if (role === 'familia') {
+        childBox.style.display = 'block';
+        tutorBox.style.display = 'none';
+      } else if (role === 'tutor') {
+        childBox.style.display = 'none';
+        tutorBox.style.display = 'block';
+      } else {
+        childBox.style.display = 'none';
+        tutorBox.style.display = 'none';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('role').addEventListener('change', toggleRoleFields);
+      toggleRoleFields();
+    });
+  </script>
+</head>
+
+<body>
+
+  <main class="container">
+    <div class="card auth-card">
+      <h1>Registrar Usuário</h1>
+
+      <% if (error && error.length > 0) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <form action="/users/register" method="POST">
+        <div>
+          <label for="name">Nome completo:</label>
+          <input type="text" id="name" name="name" placeholder="Nome completo" required>
+        </div>
+        
+        <div>
+          <label for="email">E-mail:</label>
+          <input type="email" id="email" name="email" placeholder="E-mail" required>
+        </div>
+
+        <div>
+          <label for="password">Senha:</label>
+          <input type="password" id="password" name="password" placeholder="Senha" required>
+        </div>
+
+        <div>
+          <label for="role">Função:</label>
+          <select id="role" name="role" required>
+            <option value="">Selecione a função</option>
+            <option value="familia">Família</option>
+            <option value="tutor">Tutor</option>
+          </select>
+        </div>
+
+        <div id="childFields" class="conditional-fields" style="display:none;">
+          <h3>Dados da Criança</h3>
+          <div>
+            <label for="childName">Nome da criança:</label>
+            <input type="text" id="childName" name="childName">
+          </div>
+          <div>
+            <label for="childBirthDate">Data de nascimento:</label>
+            <input type="date" id="childBirthDate" name="childBirthDate">
+          </div>
+          <div>
+            <label for="childAge">Idade:</label>
+            <input type="number" id="childAge" name="childAge" min="0" max="18">
+          </div>
+          <div>
+            <label for="childSpecialNeeds">Necessidades especiais:</label>
+            <input type="text" id="childSpecialNeeds" name="childSpecialNeeds" placeholder="Observações sobre necessidades">
+          </div>
+        </div>
+
+        <div id="tutorFields" class="conditional-fields" style="display:none;">
+          <h3>Dados do Tutor</h3>
+          <div>
+            <label for="faculdade">Faculdade / Curso:</label>
+            <input type="text" id="faculdade" name="faculdade">
+          </div>
+          <div>
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" name="idade" min="18" max="100">
+          </div>
+          <div>
+            <label for="observacoes">Observações:</label>
+            <textarea id="observacoes" name="observacoes" rows="4"></textarea>
+          </div>
+          <div>
+            <label for="experiencia">Experiência (anos):</label>
+            <input type="number"id="experiencia" name="experiencia" min="0" max="80">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-success">Registrar</button>
+        </div>
+      </form>
+      
+      <p class="auth-link">
+        Já tem conta? <a href="/users/login">Entre</a>
+      </p>
+    </div>
+  </main>
+  
+</body>
+</html>

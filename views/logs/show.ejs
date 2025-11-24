@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Log</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+  <h1>Detalhes do Log</h1>
+  
+  <div class="card">
+    <div class="details-list">
+      <p><strong>Ação:</strong> <%= log.action %></p>
+      <p><strong>Usuário:</strong> <%= log.user ? log.user.email : 'Desconhecido' %></p>
+      <p><strong>Modelo Alvo:</strong> <%= log.targetModel %></p>
+      <p><strong>ID do Alvo:</strong> <%= log.targetId %></p>
+      <p><strong>Data:</strong> <%= log.timestamp.toLocaleString('pt-BR') %></p>
+    </div>
+  </div>
+  
+  <div class="form-actions">
+    <a href="/Logs" class="btn btn-secondary">Voltar</a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

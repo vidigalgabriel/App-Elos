@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Ocorrência</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+  <h1><%= occurrence.title %></h1>
+
+  <div class="card">
+    <div class="details-list">
+      <p><strong>Descrição:</strong> <%= occurrence.description %></p>
+      <p><strong>Data:</strong> <%= occurrence.date ? occurrence.date.toLocaleDateString('pt-BR') : 'Não informada' %></p>
+      <p><strong>Criança:</strong> <%= occurrence.child.name %></p>
+      <p><strong>Reportado por:</strong> <%= occurrence.reporter.username %></p>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <a href="/Occurrences/<%= occurrence._id %>/edit" class="btn btn-primary">Editar</a>
+    <form action="/Occurrences/<%= occurrence._id %>?_method=DELETE" method="POST" class="form-delete" onsubmit="return confirm('Tem certeza que deseja deletar esta ocorrência?');">
+      <button type="submit" class="btn btn-danger">Deletar</button>
+    </form>
+    <a href="/Occurrences" class="btn btn-secondary">Voltar</a>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

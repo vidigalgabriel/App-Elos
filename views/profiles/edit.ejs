@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Perfil</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <%- include('../partials/header', { user: user }) %>
+
+  <main class="container">
+    <div class="card">
+      <h1>Editar Perfil</h1>
+
+      <form action="/profiles/<%= user._id %>?_method=PUT" method="POST">
+        
+        <div>
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="name" value="<%= user.name %>" required>
+        </div>
+
+        <div>
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" value="<%= user.email %>" required>
+        </div>
+
+        <h2>Informações da Criança</h2>
+        <div>
+          <label for="childName">Nome da Criança</label>
+          <input type="text" id="childName" name="childName" value="<%= child ? child.name : '' %>">
+        </div>
+
+        <div>
+          <label for="childBirthDate">Data de Nascimento</label>
+          <input type="date" id="childBirthDate" name="childBirthDate" value="<%= child && child.birthDate ? child.birthDate.toISOString().slice(0,10) : '' %>">
+        </div>
+
+        <div>
+          <label for="childAge">Idade</label>
+          <input type="number" id="childAge" name="childAge" value="<%= child ? child.age : '' %>">
+        </div>
+
+        <div>
+          <label for="childSpecialNeeds">Observações</label>
+          <textarea id="childSpecialNeeds" name="childSpecialNeeds"><%= child ? child.specialNeeds : '' %></textarea>
+        </div>
+
+        <% if (user.role === 'tutor') { %>
+          <h2>Informações do Tutor</h2>
+
+          <div>
+            <label for="faculdade">Faculdade</label>
+            <input type="text" id="faculdade" name="faculdade" value="<%= user.tutorData ? user.tutorData.faculdade : '' %>">
+          </div>
+
+          <div>
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" name="idade" value="<%= user.tutorData ? user.tutorData.idade : '' %>">
+          </div>
+
+          <div>
+            <label for="observacoes">Observações</label>
+            <textarea id="observacoes" name="observacoes"><%= user.tutorData ? user.tutorData.observacoes : '' %></textarea>
+          </div>
+        <% } %>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Salvar</button>
+          <a href="/profiles/<%= user._id %>" class="btn btn-secondary">Voltar</a>
+        </div>
+        
+      </form>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

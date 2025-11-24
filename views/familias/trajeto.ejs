@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhar Trajeto</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  
+  <style>
+    h1 {
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+  <div class="card">
+    <h1>Acompanhar Trajeto</h1>
+
+    <div id="map"></div>
+    <p id="map-status" class="status-text"></p>
+
+    <div class="form-actions">
+      <a href="/familias/dashboard" class="btn btn-secondary">
+        Voltar ao Dashboard
+      </a>
+    </div>
+  </div>
+</main>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const mapDiv = document.getElementById('map');
+  const statusText = document.getElementById('map-status');
+  
+  const map = L.map('map').setView([0, 0], 13);
+  let tutorMarker = null;
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19
+  }).addTo(map);
+
+  async function fetchTutorLocation() {
+    try {
+      const response = await fetch('/familias/api/tutor-location');
+      const data = await response.json();
+
+      if (data.latitude && data.longitude) {
+        statusText.textContent = 'Tutor online.';
+        const latLng = [data.latitude, data.longitude];
+
+        if (!tutorMarker) {
+          tutorMarker = L.marker(latLng).addTo(map);
+          map.setView(latLng, 16);
+        } else {
+          tutorMarker.setLatLng(latLng);
+          map.panTo(latLng);
+        }
+      } else {
+        statusText.textContent = 'Aguardando o tutor iniciar o rastreio...';
+        if (tutorMarker) {
+          map.removeLayer(tutorMarker);
+          tutorMarker = null;
+        }
+      }
+    } catch (err) {
+      statusText.textContent = 'Erro ao buscar localização.';
+    }
+  }
+
+  fetchTutorLocation();
+  setInterval(fetchTutorLocation, 10000);
+</script>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

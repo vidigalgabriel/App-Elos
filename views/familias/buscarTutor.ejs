@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buscar Tutor</title>
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    .tutor-list {
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 16px;
+    }
+    .tutor-list .card {
+      padding: 16px;
+    }
+    .tutor-list p {
+      margin: 4px 0;
+      font-size: 15px;
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 12px;
+      background: #d1e7dd;
+      color: #0f5132;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 10px;
+      text-align: center;
+      width: fit-content;
+    }
+    .selected-block {
+      border-left: 4px solid #007bff;
+      padding-left: 14px;
+      margin-bottom: 20px;
+      background: #f8f9fa;
+    }
+    .selected-block h3 {
+      margin-bottom: 6px;
+    }
+    .tutor-list .form-actions {
+      margin-top: 16px;
+      margin-bottom: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <%- include('../partials/header', { user }) %>
+
+  <main class="container">
+
+    <h1>Buscar Tutores</h1>
+
+    <% if (selectedTutor) { %>
+      <div class="card stack selected-block">
+        <h3>Tutor Selecionado</h3>
+        
+        <div class="details-list">
+          <p><strong>Nome:</strong> <%= selectedTutor.name %></p>
+          <p><strong>Faculdade:</strong> <%= selectedTutor.tutorData?.faculdade || 'Não informado' %></p>
+          <p><strong>Idade:</strong> <%= selectedTutor.tutorData?.idade || 'Não informado' %></p>
+          <p><strong>Observações:</strong> <%= selectedTutor.tutorData?.observacoes || 'Nenhuma' %></p>
+        </div>
+      </div>
+    <% } %>
+
+    <h3>Lista de Tutores Disponíveis</h3>
+
+    <% if (tutores.length === 0) { %>
+      <div class="card empty-state">
+        <p>Nenhum tutor encontrado.</p>
+      </div>
+
+    <% } else { %>
+      <ul class="tutor-list">
+        <% tutores.forEach(tutor => { %>
+          <li class="card stack">
+            <div class="details-list">
+              <p><strong>Nome:</strong> <%= tutor.name %></p>
+              <p><strong>Faculdade:</strong> <%= tutor.tutorData?.faculdade || 'Não informado' %></p>
+              <p><strong>Idade:</strong> <%= tutor.tutorData?.idade || 'Não informado' %></p>
+              <p><strong>Observações:</strong> <%= tutor.tutorData?.observacoes || 'Nenhuma' %></p>
+            </div>
+
+            <% if (!selectedTutor || selectedTutor._id.toString() !== tutor._id.toString()) { %>
+              <div class="form-actions">
+                <form action="/familias/buscarTutor/selecionar" method="POST" class="form-delete">
+                  <input type="hidden" name="tutorId" value="<%= tutor._id %>">
+                  <button type="submit" class="btn btn-primary">Selecionar</button>
+                </form>
+              </div>
+
+            <% } else { %>
+              <p class="pill">Já selecionado</p>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+
+    <div class="form-actions">
+      <a href="/familias/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

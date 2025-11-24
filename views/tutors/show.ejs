@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <title>Detalhes do Tutor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #f4f4f4;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    main {
+      flex-grow: 1;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    h1 {
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #222;
+      font-size: 1.3rem;
+      text-align: center;
+    }
+    p {
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 16px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      transition: .2s ease-in-out;
+      border: none;
+      width: 100%;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+    .btn-danger {
+      background: #dc3545;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #bb2d3b;
+    }
+    .btn-success {
+      background: #198754;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #157347;
+    }
+    
+    form {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+      margin-bottom: 0; 
+    }
+
+    .app-header {
+      width: 100%;
+      background: #2c5282;
+      color: white;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; }
+    .logo {
+      background: white;
+      color: #2c5282;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    .title { font-size: 1.3rem; font-weight: 600; }
+    .role-menu { display: flex; align-items: center; gap: 14px; }
+    .role-menu a { color: white; text-decoration: none; font-size: 0.95rem; padding: 6px 10px; border-radius: 6px; }
+    .logout { background: rgba(255, 50, 50, 0.25); }
+
+    .app-footer {
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px; 
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #ddd;
+    }
+
+    .details-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .details-list p {
+      padding: 10px;
+      font-size: 1rem;
+      border-bottom: 1px solid #f0f0f0;
+      margin-bottom: 0;
+      line-height: 1.5;
+    }
+    .details-list p:last-child {
+      border-bottom: none;
+    }
+    .details-list p strong {
+      display: block;
+      font-size: 0.85rem;
+      color: #555;
+      margin-bottom: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/header') %>
+
+  <main class="container">
+    <h1>Detalhes do Tutor</h1>
+
+    <div class="card">
+      <div class="details-list">
+        <p><strong>Nome:</strong> <%= tutor.name %></p>
+        <p><strong>Email:</strong> <%= tutor.email %></p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="/Tutors/<%= tutor._id %>/edit" class="btn btn-success">Editar</a>
+      
+      <form action="/Tutors/<%= tutor._id %>?_method=DELETE" method="POST" onsubmit="return confirm('Tem certeza que deseja deletar este tutor?');">
+        <button type="submit" class="btn btn-danger">Deletar</button>
+      </form>
+      
+      <a href="/Tutors" class="btn btn-secondary">Voltar à Lista</a>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens</title>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #f4f4f4;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex-grow: 1; 
+    }
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 12px;
+    }
+    h1, h2, h3 {
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #222;
+      line-height: 1.3;
+    }
+    h1 {
+      font-size: 1.4rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+    }
+    h3 {
+      font-size: 1.1rem;
+    }
+    p {
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .link {
+      color: #007bff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .link:hover {
+      text-decoration: underline;
+    }
+    .btn {
+      display: inline-block;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 16px; 
+      text-align: center;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      transition: .2s ease-in-out;
+      border: none;
+      width: 100%; 
+    }
+    .btn-primary {
+      background: #007bff;
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: #0066d6;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: #fff;
+    }
+    .btn-secondary:hover {
+      background: #5c636a;
+    }
+    .btn-danger {
+      background: #dc3545;
+      color: #fff;
+    }
+    .btn-danger:hover {
+      background: #bb2d3b;
+    }
+    .btn-success {
+      background: #198754;
+      color: #fff;
+    }
+    .btn-success:hover {
+      background: #157347;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+    }
+    form {
+      margin: 0;
+      padding: 0;
+    }
+    form div {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #333;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background: white;
+      font-family: 'Inter', sans-serif;
+      line-height: 1.4;
+      -webkit-appearance: none; 
+      -moz-appearance: none;
+      appearance: none;
+      min-height: 48px; 
+    }
+    textarea {
+      min-height: 100px;
+    }
+    select {
+      background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2Am223333%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 10px;
+      padding-right: 30px;
+    }
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .form-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+      margin-bottom: 0;
+    }
+    .app-footer {
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 40px; 
+      color: #666;
+      font-size: 0.9rem;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+    .chat-container {
+      max-width: 700px;
+      margin: 20px auto 0 auto;
+      background: #fff;
+      padding: 22px;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    .chat-container h2 {
+      text-align: center;
+      font-size: 1.3rem;
+      margin-bottom: 8px;
+    }
+    .messages-box {
+      height: 60vh;
+      max-height: 400px;
+      overflow-y: auto;
+      border-radius: 10px;
+      padding: 14px;
+      background: #f2f4f7;
+      display: flex;
+      gap: 10px;
+      
+      flex-direction: column-reverse;
+    }
+    .message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 75%;
+      font-size: 15px;
+      display: flex;
+      flex-direction: column;
+    }
+    .sent {
+      background: #007bff;
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 4px;
+    }
+    .received {
+      background: #e9e9e9;
+      color: #333;
+      align-self: flex-start;
+      border-bottom-left-radius: 4px;
+    }
+    .message strong {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 2px;
+      opacity: 0.8;
+    }
+    .chat-form {
+      display: flex;
+      gap: 10px;
+      margin-top: 8px;
+    }
+    .input-message {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+      background: #fff;
+      min-height: 48px;
+    }
+    .input-message:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    .chat-form .btn-primary {
+      width: auto;
+      padding: 0 16px;
+    }
+    .chat-container .btn-secondary {
+      margin-top: 12px;
+    }
+    .no-messages {
+      text-align: center;
+      color: #777;
+      font-style: italic;
+    }
+    @media (min-width: 768px) {
+      .container {
+        padding: 24px;
+      }
+      h1, .chat-container h2 {
+        font-size: 1.8rem;
+      }
+      .btn {
+        width: auto;
+      }
+      .form-actions {
+        flex-direction: row;
+      }
+      .form-actions .btn {
+        width: auto;
+      }
+      .messages-box {
+        height: 380px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+
+  <div class="chat-container">
+
+    <h2>Chat com <%= pairedUser ? pairedUser.name : 'Nenhuma família pareada' %></h2>
+
+    <div 
+      id="messages" 
+      class="messages-box"
+      data-user-id="<%= user._id %>"
+      data-paired-user-name="<%= pairedUser ? pairedUser.name : 'Família' %>"
+      data-last-timestamp="<%= messages.length > 0 ? messages[0].createdAt : '' %>"
+    >
+      <% if (messages && messages.length > 0) { %>
+        <% messages.forEach(msg => { %>
+          <div class="message <%= msg.sender._id.equals(user._id) ? 'sent' : 'received' %>">
+            <strong><%= msg.sender._id.equals(user._id) ? 'Você' : pairedUser.name %>:</strong>
+            <span><%= msg.content %></span>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p class="no-messages">Sem mensagens por enquanto.</p>
+      <% } %>
+    </div>
+
+    <% if (pairedUser) { %>
+      <form id="msgForm" action="/tutors/mensagens" method="POST" class="chat-form">
+        <input type="text" id="msgInput" name="content" placeholder="Escreva sua mensagem..." required class="input-message">
+        <input type="hidden" name="receiverId" value="<%= pairedUser._id %>">
+        <button type="submit" id="sendBtn" class="btn btn-primary">Enviar</button>
+      </form>
+    <% } %>
+
+    <div class="form-actions">
+      <a href="/tutors/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+    </div>
+
+  </div>
+
+</main>
+
+<%- include('../partials/footer') %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const messagesBox = document.getElementById('messages');
+    if (!messagesBox) return;
+
+    const currentUserId = messagesBox.dataset.userId;
+    const pairedUserName = messagesBox.dataset.pairedUserName;
+    let lastTimestamp = messagesBox.dataset.lastTimestamp;
+
+    function createMessageElement(msg) {
+      const isSent = msg.sender === currentUserId;
+      const msgClass = isSent ? 'sent' : 'received';
+      const senderName = isSent ? 'Você' : pairedUserName;
+
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `message ${msgClass}`;
+      
+      const strong = document.createElement('strong');
+      strong.textContent = `${senderName}:`;
+      
+      const span = document.createElement('span');
+      span.textContent = msg.content;
+      
+      msgDiv.appendChild(strong);
+      msgDiv.appendChild(span);
+      
+      return msgDiv;
+    }
+
+    async function fetchNewMessages() {
+      try {
+        const url = `/tutors/api/mensagens?lastMessageTimestamp=${lastTimestamp}`;
+        const response = await fetch(url);
+        if (!response.ok) return;
+
+        const newMessages = await response.json();
+        
+        if (newMessages.length > 0) {
+          const noMessagesP = messagesBox.querySelector('.no-messages');
+          if (noMessagesP) {
+            noMessagesP.remove();
+          }
+
+          newMessages.forEach(msg => {
+            const newMsgElement = createMessageElement(msg);
+            messagesBox.append(newMsgElement);
+          });
+          
+          lastTimestamp = newMessages[newMessages.length - 1].createdAt;
+        }
+      } catch (err) {
+        console.error('Erro ao buscar mensagens:', err);
+      }
+    }
+
+    if (pairedUserName !== 'Família') {
+      setInterval(fetchNewMessages, 5000);
+    }
+  });
+</script>
+
+</body>
+</html>

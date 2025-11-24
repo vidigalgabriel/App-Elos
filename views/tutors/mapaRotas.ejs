@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Mapa de Rotas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <%- include('../partials/header', { user: user }) %>
+
+  <main class="container">
+    <div class="card">
+      <h1>Mapa de Rotas</h1>
+
+      <div 
+        id="map" 
+        data-locations='<%- JSON.stringify(locations || []) %>'
+        data-tracking="<%= tracking %>">
+      </div>
+      <p id="map-status" class="status-text"></p>
+
+      <div class="form-actions">
+        <button id="startTracking" class="btn btn-primary">Iniciar rastreio</button>
+        <button id="stopTracking" class="btn btn-danger">Finalizar rastreio</button>
+        <a href="/tutors/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+      </div>
+    </div>
+  </main>
+
+  <%- include('../partials/footer') %>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  
+  <script>
+    const map = L.map('map').setView([0, 0], 2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19 }).addTo(map);
+
+    let marker = null;
+    let watchId = null;
+    
+    const startBtn = document.getElementById('startTracking');
+    const stopBtn = document.getElementById('stopTracking');
+    const statusText = document.getElementById('map-status');
+    const mapDiv = document.getElementById('map');
+
+    function updatePosition(lat, lng) {
+      const latLng = [lat, lng];
+      if (!marker) {
+        marker = L.marker(latLng).addTo(map);
+      } else {
+        marker.setLatLng(latLng);
+      }
+      map.setView(latLng, 16);
+    }
+
+    async function startGeolocation() {
+      if (!navigator.geolocation) {
+        statusText.textContent = 'Geolocalização não suportada.';
+        return alert('Geolocalização não suportada neste navegador.');
+      }
+      
+      startBtn.textContent = 'Iniciando...';
+      startBtn.disabled = true;
+
+      try {
+        await fetch('/tutors/mapa-rotas/start', { method: 'POST' });
+        
+        statusText.textContent = 'Rastreando...';
+        startBtn.textContent = 'Rastreando...';
+        stopBtn.disabled = false;
+
+        watchId = navigator.geolocation.watchPosition(
+          pos => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            updatePosition(lat, lng);
+
+            fetch('/tutors/mapa-rotas/update', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ latitude: lat, longitude: lng })
+            });
+          },
+          err => {
+            console.error(err);
+            statusText.textContent = 'Erro ao obter localização.';
+          },
+          { enableHighAccuracy: true, maximumAge: 0, timeout: 5000 }
+        );
+      } catch (err) {
+        console.error('Erro ao iniciar rastreio:', err);
+        statusText.textContent = 'Erro ao iniciar no servidor.';
+        startBtn.textContent = 'Iniciar rastreio';
+        startBtn.disabled = false;
+      }
+    }
+
+    async function stopGeolocation() {
+      if (watchId) navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+
+      startBtn.textContent = 'Iniciar rastreio';
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+      statusText.textContent = 'Rastreio finalizado.';
+      
+      try {
+        await fetch('/tutors/mapa-rotas/stop', { method: 'POST' });
+      } catch (err) {
+        console.error('Erro ao finalizar rastreio:', err);
+      }
+    }
+
+    startBtn.addEventListener('click', startGeolocation);
+    stopBtn.addEventListener('click', stopGeolocation);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const isTracking = mapDiv.dataset.tracking === 'true';
+      const locationsData = mapDiv.dataset.locations;
+      const locations = JSON.parse(locationsData || '[]');
+      
+      if (isTracking) {
+        startGeolocation();
+      } else {
+        stopBtn.disabled = true;
+        statusText.textContent = 'Rastreio inativo.';
+      }
+      
+      if (locations.length > 0) {
+        updatePosition(locations[0].latitude, locations[0].longitude);
+      }
+    });
+  </script>
+</body>
+</html>

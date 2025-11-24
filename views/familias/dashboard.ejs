@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard da Família</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+
+  <h1>Bem-vindo, <%= user.name %></h1>
+
+  <nav class="dashboard-nav">
+    <ul class="nav-list">
+
+      <li>
+        <a href="/familias/buscarTutor" class="nav-link-card">
+          Buscar Tutores
+        </a>
+      </li>
+
+      <li>
+        <% if (user.tutorId) { %>
+          <a href="/familias/mensagens?tutor=<%= user.tutorId %>" class="nav-link-card">
+            Mensagens
+          </a>
+        <% } else { %>
+          <a href="/familias/mensagens" class="nav-link-card">
+            Mensagens
+          </a>
+        <% } %>
+      </li>
+
+      <li>
+        <a href="/familias/trajeto" class="nav-link-card">
+          Acompanhar Trajeto
+        </a>
+      </li>
+
+      <li>
+        <a href="/familias/registros" class="nav-link-card">
+          Registro
+        </a>
+      </li>
+
+      <li>
+        <a href="/profiles/<%= user._id %>" class="nav-link-card">
+          Meu Perfil
+        </a>
+      </li>
+
+    </ul>
+  </nav>
+
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

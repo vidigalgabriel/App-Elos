@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Ocorrência</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+  <h1>Editar Ocorrência</h1>
+
+  <div class="card">
+    <form action="/Occurrences/<%= occurrence._id %>?_method=PUT" method="POST">
+      <div>
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" value="<%= occurrence.title %>" required>
+      </div>
+
+      <div>
+        <label for="description">Descrição:</label>
+        <textarea id="description" name="description" required><%= occurrence.description %></textarea>
+      </div>
+
+      <div>
+        <label for="date">Data:</label>
+        <input type="date" id="date" name="date" value="<%= occurrence.date ? occurrence.date.toISOString().substring(0,10) : '' %>">
+      </div>
+
+      <div>
+        <label for="child">Criança:</label>
+        <select id="child" name="child">
+          <% children.forEach(child => { %>
+            <option value="<%= child._id %>" <%= child._id.equals(occurrence.child._id) ? 'selected' : '' %>><%= child.name %></option>
+          <% }) %>
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Atualizar</button>
+        <a href="/Occurrences" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>

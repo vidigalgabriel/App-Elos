@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lista de Crianças</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+  <%- include('partials/header', { user }) %>
+
+  <main class="container">
+
+    <div class="card">
+      <h1>Minhas Crianças</h1>
+
+      <ul class="child-list-container">
+        <% children.forEach(child => { %>
+          <li class="child-item">
+            <a href="/children/<%= child._id %>"><%= child.name %></a>
+          </li>
+        <% }) %>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>Adicionar Nova Criança</h2>
+
+      <form action="/children" method="POST" class="add-child-form">
+        <div>
+          <label for="name">Nome da criança</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div>
+          <label for="birthDate">Data de nascimento</label>
+          <input type="date" id="birthDate" name="birthDate">
+        </div>
+
+        <div>
+          <label for="specialNeeds">Necessidades especiais</label>
+          <input type="text" id="specialNeeds" name="specialNeeds" placeholder="Nenhuma (opcional)">
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Adicionar</button>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>

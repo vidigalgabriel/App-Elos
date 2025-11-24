@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perfil de <%= user.name %></title>
+  <link rel="stylesheet" href="/style.css">
+  
+  <style>
+    h1 {
+      text-align: center;
+    }
+    h2 {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <%- include('../partials/header', { user: user }) %>
+
+  <main class="container">
+    <h1>Perfil de <%= user.name %></h1>
+
+    <div class="card">
+      <div class="details-list">
+        <p><strong>Email:</strong> <%= user.email %></p>
+        <p><strong>Função:</strong> <%= user.role %></p>
+      </div>
+    </div>
+
+    <% if (children && children.length > 0) { %>
+      <h2>Dados da Criança</h2>
+      <% children.forEach(child => { %>
+        <div class="card">
+          <div class="details-list">
+            <p><strong>Nome:</strong> <%= child.name %></p>
+            <p><strong>Idade:</strong> <%= child.age %></p>
+            <p><strong>Data de nascimento:</strong> <%= child.birthDate ? child.birthDate.toLocaleDateString('pt-BR') : 'Não informada' %></p>
+            <p><strong>Necessidades especiais:</strong> <%= child.specialNeeds || 'Nenhuma' %></p>
+          </div>
+        </div>
+      <% }) %>
+    <% } else { %>
+      <div class="card empty-state">
+        <p>Nenhuma criança cadastrada.</p>
+      </div>
+    <% } %>
+
+    <% if (user.role === 'familia' && user.selectedTutor) { %>
+      <h2>Tutor Selecionado</h2>
+      <div class="card">
+        <div class="details-list">
+          <p><strong>Nome:</strong> <%= user.selectedTutor.name %></p>
+          <p><strong>Faculdade:</strong> <%= user.selectedTutor.tutorData?.faculdade || 'Não informado' %></p>
+          <p><strong>Idade:</strong> <%= user.selectedTutor.tutorData?.idade || 'Não informado' %></p>
+          <p><strong>Observações:</strong> <%= user.selectedTutor.tutorData?.observacoes || 'Nenhuma' %></p>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (user.role === 'tutor' && user.tutorData) { %>
+      <h2>Dados do Tutor</h2>
+      <div class="card">
+        <div class="details-list">
+          <p><strong>Faculdade:</strong> <%= user.tutorData.faculdade %></p>
+          <p><strong>Idade:</strong> <%= user.tutorData.idade %></p>
+          <p><strong>Observações:</strong> <%= user.tutorData.observacoes %></p>
+        </div>
+      </div>
+    <% } %>
+
+    <div class="form-actions">
+      <a href="/profiles/<%= user._id %>/edit" class="btn btn-primary">Editar perfil</a>
+    </div>
+
+  </main>
+
+  <%- include('../partials/footer') %>
+
+</body>
+</html>

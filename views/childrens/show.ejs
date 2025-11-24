@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes da Criança</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <%- include('partials/header', { user }) %>
+
+  <main class="container">
+
+    <h1>Detalhes da Criança</h1>
+
+    <div class="card details-card">
+      <div class="details-list">
+        <p><strong>Nome:</strong> <%= child.name %></p>
+        <p><strong>Data de Nascimento:</strong> <%= child.birthDate ? child.birthDate.toLocaleDateString('pt-BR') : 'Não informada' %></p>
+        <p><strong>Necessidades Especiais:</strong> <%= child.specialNeeds || 'Nenhuma' %></p>
+        <p><strong>Responsável:</strong> <%= child.guardian ? child.guardian.username : 'Não informado' %></p>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <a href="/children/<%= child._id %>/edit" class="btn btn-primary">Editar</a>
+
+      <form action="/children/<%= child._id %>?_method=DELETE" method="POST" class="form-delete" onsubmit="return confirm('Tem certeza que deseja deletar?')">
+        <button type="submit" class="btn btn-danger">Deletar Criança</button>
+      </form>
+      
+      <a href="/children" class="btn btn-secondary">Voltar à lista</a>
+    </div>
+
+  </main>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>

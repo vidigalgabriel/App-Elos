@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Logs do Sistema</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<%- include('../partials/header', { user: user }) %>
+
+<main class="container">
+
+  <h1>Logs do Sistema</h1>
+
+  <div class="card empty-state">
+    <p>Nenhum log disponível no momento.</p>
+  </div>
+
+  <div class="form-actions">
+    <a href="/tutors/dashboard" class="btn btn-secondary">Voltar ao Dashboard</a>
+  </div>
+
+</main>
+
+<%- include('../partials/footer') %>
+
+</body>
+</html>
