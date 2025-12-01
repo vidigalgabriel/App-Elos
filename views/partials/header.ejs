@@ -1,4 +1,5 @@
 <header class="app-header">
+  <link rel="manifest" href="/manifest.json">
   <div class="brand">
     <img src="/images/logoElos.jpg" alt="Logo Elos de Inclusão" class="app-logo-img">
     <div class="title">Elos de Inclusão</div>
@@ -58,12 +59,10 @@
     z-index: 1001;
   }
   .app-logo-img {
-    /* CORREÇÃO: Altura maior e mantém a proporção retangular */
     height: 48px; 
     max-width: 120px; 
     width: auto;
     flex-shrink: 0;
-    /* Removido border-radius que causava o corte */
   }
   .title {
     font-size: 1.2rem;
@@ -121,10 +120,11 @@
   .logout-form {
     margin: 0;
     padding: 0;
-    display: inline;
+    display: flex;
+    align-items: center;
   }
   .logout-button {
-    background: none;
+    background: rgba(255, 50, 50, 0.25);
     border: none;
     font: inherit;
     cursor: pointer;
@@ -135,7 +135,6 @@
     padding: 6px 10px;
     border-radius: 6px;
     transition: background 0.2s, transform 0.1s ease;
-    background: rgba(255, 50, 50, 0.25);
     flex-shrink: 0;
   }
   .logout-button:hover {
@@ -144,8 +143,6 @@
   .logout-button:active {
       transform: scale(0.98);
   }
-  
-  /* --- MEDIA QUERY PARA MOBILE --- */
   
   @media (max-width: 767px) {
     .nav-toggle {
@@ -175,23 +172,26 @@
       width: 100%;
       text-align: left;
       font-size: 1.1rem;
-      padding: 15px 10px;
+    }
+    .role-menu a {
+        padding: 15px 10px;
+    }
+    .logout-form {
+        margin-top: auto;
+        width: 100%;
     }
     .logout-button {
-      margin-top: auto;
+      padding: 15px 10px;
       background: rgba(255, 50, 50, 0.4);
     }
     .app-logo-img {
-        /* Garante que a logo não ocupe toda a barra no mobile */
         max-width: 100px;
         height: auto;
     }
     .title {
-        /* Esconde o título no mobile para dar espaço à logo */
         display: none; 
     }
   }
-
 </style>
 
 <script>

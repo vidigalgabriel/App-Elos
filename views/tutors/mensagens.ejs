@@ -293,7 +293,7 @@
     >
       <% if (messages && messages.length > 0) { %>
         <% messages.forEach(msg => { %>
-          <div class="message <%= msg.sender._id.equals(user._id) ? 'sent' : 'received' %>">
+          <div class="message <%= msg.sender._id.equals(user._id) ? 'sent' : 'received' %>" data-id="<%= msg._id %>">
             <strong><%= msg.sender._id.equals(user._id) ? 'Você' : pairedUser.name %>:</strong>
             <span><%= msg.content %></span>
           </div>
@@ -337,6 +337,7 @@
 
       const msgDiv = document.createElement('div');
       msgDiv.className = `message ${msgClass}`;
+      msgDiv.dataset.id = msg._id;
       
       const strong = document.createElement('strong');
       strong.textContent = `${senderName}:`;
@@ -365,6 +366,8 @@
           }
 
           newMessages.forEach(msg => {
+            if (document.querySelector(`.message[data-id="${msg._id}"]`)) return;
+
             const newMsgElement = createMessageElement(msg);
             messagesBox.append(newMsgElement);
           });

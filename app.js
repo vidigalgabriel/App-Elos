@@ -83,3 +83,17 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
 
+// Verifica se o navegador suporta Service Workers
+if ('serviceWorker' in navigator) {
+  // O Service Worker deve ser registrado apenas após o carregamento completo da página
+  window.addEventListener('load', () => {
+    // Registra o sw.js (que você colocou na pasta public)
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        // Registro bem-sucedido
+      })
+      .catch(err => {
+        // Falha no registro
+      });
+  });
+}
